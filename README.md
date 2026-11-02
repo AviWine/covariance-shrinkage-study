@@ -36,8 +36,8 @@ estimation window and a single out-of-sample month**:
 | Evaluation period | January 2011 (one month) |
 
 No risk-free rate is used. "Excess" returns are measured against the **equal-weighted benchmark**: each ETF's return
-minus the cross-sectional average. Yahoo revises adjusted prices over time, so a fresh download can differ
-slightly from the data used here.
+minus the cross-sectional average. Yahoo revises adjusted prices over time, so the exact price snapshot used
+here is committed as `etf_prices.csv`. Re-running `download_data.py` overwrites it and can shift the results slightly.
 
 ## Method
 
@@ -105,7 +105,7 @@ numpy==2.5.4  pandas==3.0.6  scipy==1.18.1  cvxpy==1.9.3  matplotlib==3.11.2  yf
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install numpy==2.5.4 pandas==3.0.6 scipy==1.18.1 cvxpy==1.9.3 matplotlib==3.11.2 yfinance==1.7.0 ipykernel==7.4.0
-python download_data.py          # writes etf_prices.csv and sp500.csv
+# etf_prices.csv is in the repo; only run download_data.py to refresh it (results may then differ slightly)
 # then open exploratory_analysis.ipynb in PyCharm, VS Code or Jupyter with this .venv as the kernel, and Run All
 ```
 
