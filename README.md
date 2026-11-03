@@ -11,19 +11,33 @@ and does any benefit survive transaction costs? The main variable is the ratio o
 
 ## Status
 
-This is a work in progress. So far, [`exploratory_analysis.ipynb`](exploratory_analysis.ipynb) covers a **single
-estimation window and a single out-of-sample month**:
+This is a work in progress. [`exploratory_analysis.ipynb`](exploratory_analysis.ipynb) works through a single
+estimation window and month. The consolidated code runs the paper's full evaluation algorithm, and its results are in
+**[RESULTS.md](RESULTS.md)**.
 
 - [x] Data download and cleaning checks
 - [x] Sample covariance `S` and Ledoit-Wolf (2004) shrinkage towards a constant-correlation target, `S_hat`
 - [x] Synthetic alpha forecast with a constant IR of 1.5, checked by assertion
 - [x] Quadratic optimiser run with `S` and `S_hat`, and comparison of the two portfolios over January 2011
-- [ ] Rolling monthly backtest across many months
+- [x] Rolling monthly evaluation (paper, p. 8): 164 months × 50 repetitions × N = 11–27, **sample covariance**
+- [ ] The same evaluation for Shrink-CC (code is ready: `python main.py --estimator Shrink-CC`)
 - [ ] T/N regimes where shrinkage is large (short windows, more assets)
 - [ ] A second, non-variance-preserving shrinkage target (scaled identity)
 - [ ] Transaction-cost model and turnover
 - [ ] Sensitivity to sample length, IR and cost assumptions; repeated noise draws
-- [ ] Tests for the numerical checks; code split into data / estimators / optimisation / evaluation
+- [x] Code split into data / estimators / alpha / optimisation / evaluation modules
+- [ ] Tests for the numerical checks
+
+## Code layout
+
+| File | Contents |
+|---|---|
+| [`data.py`](data.py) | Load prices, monthly returns, nested ETF universes |
+| [`estimators.py`](estimators.py) | Sample covariance, Ledoit-Wolf constant-correlation shrinkage |
+| [`alpha.py`](alpha.py) | Appendix C synthetic forecasts, with the ex-ante IR check |
+| [`optimiser.py`](optimiser.py) | Problem (1): minimum tracking variance subject to a gain target |
+| [`evaluation.py`](evaluation.py) | Rolling evaluation algorithm and annualised IR, mean and SD |
+| [`main.py`](main.py) | Runs the evaluation for each N and writes `results/` |
 
 ## Data
 
@@ -106,7 +120,9 @@ numpy==2.5.4  pandas==3.0.6  scipy==1.18.1  cvxpy==1.9.3  matplotlib==3.11.2  yf
 python -m venv .venv && source .venv/bin/activate
 pip install numpy==2.5.4 pandas==3.0.6 scipy==1.18.1 cvxpy==1.9.3 matplotlib==3.11.2 yfinance==1.7.0 ipykernel==7.4.0
 # etf_prices.csv is in the repo; only run download_data.py to refresh it (results may then differ slightly)
-# then open exploratory_analysis.ipynb in PyCharm, VS Code or Jupyter with this .venv as the kernel, and Run All
+python main.py                   # evaluation for the sample covariance, writes results/ (about 30 seconds)
+python main.py --cap 0.1         # robustness check with the paper's literal weight cap
+# the exploratory notebook: open exploratory_analysis.ipynb with this .venv as the kernel, and Run All
 ```
 
 ## References
