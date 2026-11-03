@@ -84,22 +84,6 @@ here is committed as `etf_prices.csv`. Re-running `download_data.py` overwrites 
 Units: covariances are daily and alphas are monthly. Tracking errors are converted to monthly with a factor of 21
 trading days (variance × 21, standard deviation × √21).
 
-## Result so far (one window, one month)
-
-| | S | S_hat |
-|---|---|---|
-| Shrinkage intensity δ* | – | 0.017 |
-| Forecast alpha (monthly) | 0.186% | 0.186% |
-| Ex-ante TE, monthly (own estimator) | 0.287% | 0.300% |
-| Realised active return, Jan 2011 | −0.052% | −0.036% |
-| Realised TE, Jan 2011 (monthly) | 0.258% | 0.264% |
-| Σ\|active weights\| | 0.368 | 0.365 |
-
-With T/N ≈ 46 the estimated shrinkage is under 2%. The two portfolios differ by only about 1.2% of total weight, and
-their outcomes are indistinguishable. **This is the expected "shrinkage doesn't matter" baseline**, not evidence for or
-against shrinkage. One month and one noise draw can't separate the estimators. The rolling backtest across
-T/N regimes is what will answer the question.
-
 ## Limitations
 
 - The alpha is synthetic and uses realised returns (look-ahead by design). Results describe the estimators, not a strategy.
